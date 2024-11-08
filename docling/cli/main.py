@@ -23,6 +23,7 @@ from docling.datamodel.base_models import (
 from docling.datamodel.document import ConversionResult
 from docling.datamodel.pipeline_options import (
     EasyOcrOptions,
+    OcrMacOptions,
     OcrOptions,
     PdfPipelineOptions,
     TableFormerMode,
@@ -73,6 +74,7 @@ class OcrEngine(str, Enum):
     EASYOCR = "easyocr"
     TESSERACT_CLI = "tesseract_cli"
     TESSERACT = "tesseract"
+    OCRMAC = "ocrmac"
 
 
 def export_documents(
@@ -224,6 +226,8 @@ def convert(
             ocr_options = TesseractCliOcrOptions()
         case OcrEngine.TESSERACT:
             ocr_options = TesseractOcrOptions()
+        case OcrEngine.OCRMAC:
+            ocr_options = OcrMacOptions()
         case _:
             raise RuntimeError(f"Unexpected OCR engine type {ocr_engine}")
 

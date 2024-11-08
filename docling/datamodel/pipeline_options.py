@@ -61,6 +61,17 @@ class TesseractOcrOptions(OcrOptions):
     )
 
 
+class OcrMacOptions(OcrOptions):
+    kind: Literal["ocrmac"] = "ocrmac"
+    lang: List[str] = ["fr-FR", "de-DE", "es-ES", "en-US"]
+    recognition: str = "accurate"
+    framework: str = "vision"
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+
+
 class PipelineOptions(BaseModel):
     create_legacy_output: bool = (
         True  # This defautl will be set to False on a future version of docling
@@ -73,9 +84,9 @@ class PdfPipelineOptions(PipelineOptions):
     do_ocr: bool = True  # True: perform OCR, replace programmatic PDF text
 
     table_structure_options: TableStructureOptions = TableStructureOptions()
-    ocr_options: Union[EasyOcrOptions, TesseractCliOcrOptions, TesseractOcrOptions] = (
-        Field(EasyOcrOptions(), discriminator="kind")
-    )
+    ocr_options: Union[
+        EasyOcrOptions, TesseractCliOcrOptions, TesseractOcrOptions, OcrMacOptions
+    ] = Field(EasyOcrOptions(), discriminator="kind")
 
     images_scale: float = 1.0
     generate_page_images: bool = False
